@@ -1,0 +1,136 @@
+<!-- survey.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    <style>
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            width: 48%; 
+        }
+    </style>
+    <title>Actave - Anxiety Screening</title>
+</head>
+
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Actave Logo" class="logo">
+    </header>
+    <main>
+        <section id="survey">
+            <form id="anxietyForm">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="font-weight: 500;">Over the last 2 weeks, how often have you been bothered by the following problems?</th>
+                            <th style="font-weight: 500;">Not at all</th>
+                            <th style="font-weight: 500;">Several days</th>
+                            <th style="font-weight: 500;">More than half the days</th>
+                            <th style="font-weight: 500;">Nearly every day</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Questions and options rows -->
+                        <tr>
+                            <td>Feeling nervous, anxious, or on edge</td>
+                            <td><label><input type="radio" name="q1" value="0" required></label></td>
+                            <td><label><input type="radio" name="q1" value="1" required></label></td>
+                            <td><label><input type="radio" name="q1" value="2" required></label></td>
+                            <td><label><input type="radio" name="q1" value="3" required></label></td>
+                        </tr>
+                        <tr>
+                            <td>Not being able to stop or control worrying</td>
+                            <td><label><input type="radio" name="q2" value="0" required></label></td>
+                            <td><label><input type="radio" name="q2" value="1" required></label></td>
+                            <td><label><input type="radio" name="q2" value="2" required></label></td>
+                            <td><label><input type="radio" name="q2" value="3" required></label></td>
+                        </tr>                
+                        <tr>
+                            <td>Worrying too much about different things</td>
+                            <td><label><input type="radio" name="q3" value="0" required></label></td>
+                            <td><label><input type="radio" name="q3" value="1" required></label></td>
+                            <td><label><input type="radio" name="q3" value="2" required></label></td>
+                            <td><label><input type="radio" name="q3" value="3" required></label></td>
+                        </tr>
+                        <tr>
+                            <td>Trouble relaxing</td>
+                            <td><label><input type="radio" name="q4" value="0" required></label></td>
+                            <td><label><input type="radio" name="q4" value="1" required></label></td>
+                            <td><label><input type="radio" name="q4" value="2" required></label></td>
+                            <td><label><input type="radio" name="q4" value="3" required></label></td>
+                        </tr>
+                        <tr>
+                            <td>Being so restless that it is hard to sit still</td>
+                            <td><label><input type="radio" name="q5" value="0" required></label></td>
+                            <td><label><input type="radio" name="q5" value="1" required></label></td>
+                            <td><label><input type="radio" name="q5" value="2" required></label></td>
+                            <td><label><input type="radio" name="q5" value="3" required></label></td>
+                        </tr>
+                        <tr>
+                            <td>Becoming easily annoyed or irritable</td>
+                            <td><label><input type="radio" name="q6" value="0" required></label></td>
+                            <td><label><input type="radio" name="q6" value="1" required></label></td>
+                            <td><label><input type="radio" name="q6" value="2" required></label></td>
+                            <td><label><input type="radio" name="q6" value="3" required></label></td>
+                        </tr>
+                        <tr>
+                            <td>Feeling afraid as if something awful might happen</td>
+                            <td><label><input type="radio" name="q7" value="0" required></label></td>
+                            <td><label><input type="radio" name="q7" value="1" required></label></td>
+                            <td><label><input type="radio" name="q7" value="2" required></label></td>
+                            <td><label><input type="radio" name="q7" value="3" required></label></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="button-container">
+                    <button type="button" onclick="calculateAnxiety()">Next Page</button>
+                </div>
+            </form>
+        </section>
+    </main>
+    <script src="scripts/navigation.js"></script>
+    <script src="scripts/main.js"></script>
+    <script>
+         function calculateAnxiety() {
+             // Get all radio buttons
+            var radioButtons = document.querySelectorAll('input[type="radio"]:checked');
+            // Prepare data to send to the server
+         
+        // Check if the number of selected radio buttons is equal to the total number of questions
+        var totalQuestions = 7; // Update this if you add more questions
+        if (radioButtons.length === totalQuestions) {
+            // All questions are answered, proceed to the next page
+            window.location.href = '/templates/fileUpload.html';
+            var answers = Array.from(radioButtons).map(button => button.value);
+            
+            fetch('/save_answers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ answers: answers }),
+            })
+            .then(response => response.json())
+            .then(data => console.log('Server response:', data))
+            .catch(error => console.error('Error:', error));
+        } else {
+            // Display an error message
+            alert("Please answer all the questions before proceeding.");
+            // Alternatively, you can show an error message in the HTML itself
+            // For example, by adding a <div> with an error message inside the form
+        }
+    }
+    </script>
+</body>
+
+</html>
