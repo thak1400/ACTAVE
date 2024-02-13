@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400&display=swap">
+    <title>Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 40px;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+    .text-container {
+    max-width: 600px; /* Adjust the max-width as needed */
+    margin: 0 auto; /* Center the text */
+    }   
+    .anxiety-level {
+    font-size: 45px; /* Adjust the font size as needed */
+    }
+
+</style>
+<header>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Actave Logo" class="logo">
+</header>
+<body>
+    <h1>Results</h1>
+
+    <p class="text-container"><strong>Text from the Video:</strong> {{ text }}</p>
+    <p><strong>Mood:</strong> {{ mood }}</p>
+    <p><strong>Tonality:</strong> {{ tonality }}</p>
+    <p><strong>GAD Score:</strong> {{ GAD_Score }}</p>
+    <p>Anxiety Level: <strong class="anxiety-level">{{ Anxiety_Level }} </strong></p>
+
+    <!-- You can customize the HTML as needed -->
+
+</body>
+</html>
